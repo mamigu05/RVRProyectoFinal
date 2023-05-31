@@ -1,11 +1,34 @@
 #include "UnoGame.hpp"
+#include "RenderManager.hpp"
 
-UnoGame::UnoGame() : Scene() {}
+UnoGame::UnoGame(RenderManager* rM) : Scene() {
+    renderMng = rM;
 
-UnoGame::~UnoGame() {}
+    //Prueba
+    destinationRect.x = 0;
+    destinationRect.y = 0;
+    destinationRect.w = 200;
+    destinationRect.h = 350;
+    texture = renderMng->loadImage("assets/+4.png");
+}
 
-void UnoGame::init() {}
 
-void UnoGame::update() {}
+UnoGame::~UnoGame() {
+    //Prueba
+    renderMng->deleteTexture(texture);
+}
 
-void UnoGame::render() {}
+void UnoGame::update() {
+    //Prueba
+    destinationRect.x = destinationRect.x + 1 == 400 ?
+                                    0 : destinationRect.x+1;
+
+    // Update de las clases
+}
+
+void UnoGame::render() {
+    //Prueba
+    renderMng->renderImage(texture, &destinationRect);
+
+    // Renderizado de clases
+}
