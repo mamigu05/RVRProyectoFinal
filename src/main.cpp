@@ -4,74 +4,53 @@
 // opengl
 #include <GL/glew.h>
 
-//aaa
 // sdl
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
-#define SCREEN_SIZE_X 800
-#define SCREEN_SIZE_Y 600
+#include "RenderManager.hpp"
+
+
 
 int main (int argc, char* argv[])
 {
-    // ----- Initialize SDL
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-    {
-        fprintf(stderr, "SDL could not initialize\n");
-        return 1;
-    }
+   RenderManager renderManager;
+   if(renderManager.init())
+   {
+        SDL_Rect destinationRect;
+        destinationRect.x = 0;
+        destinationRect.y = 0;
+        destinationRect.w = 200;
+        destinationRect.h = 350;
 
-    // ----- Create window
-    SDL_Window* window = SDL_CreateWindow("My Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_SIZE_X, SCREEN_SIZE_Y, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    if (!window)
-    {
-        fprintf(stderr, "Error creating window.\n");
-        return 2;
-    }
+        
+        SDL_Texture* texture = renderManager.loadImage("assets/+4.png");
 
-    // ----- SDL OpenGL settings
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-
-    // ----- SDL OpenGL context
-    SDL_GLContext glContext = SDL_GL_CreateContext(window);
-
-    // ----- SDL v-sync
-    SDL_GL_SetSwapInterval(1);
-
-    // ----- GLEW
-    glewInit();
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // ----- Game loop
-    bool quit = false;
-    while (quit == false)
-    {
-        SDL_Event windowEvent;
-        while (SDL_PollEvent(&windowEvent))
+        // ----- Game loop
+        bool quit = false;
+        while (quit == false)
         {
-            if (windowEvent.type == SDL_QUIT)
+            SDL_Event windowEvent;
+            while (SDL_PollEvent(&windowEvent))
             {
-                quit = true;
-                break;
+                if (windowEvent.type == SDL_QUIT)
+                {
+                    quit = true;
+                    break;
+                }
             }
+
+            /*
+                do drawing here
+            */
+
+            renderManager.clear();
+            renderManager.renderImage(texture, &destinationRect);
+            renderManager.render();
+
         }
-
-        /*
-            do drawing here
-        */
-
-        SDL_GL_SwapWindow(window);
-    }
-
-    // ----- Clean up
-    SDL_GL_DeleteContext(glContext);
-
+        renderManager.deleteTexture(texture);
+        renderManager.release();
+   }
     return 0;
 }
