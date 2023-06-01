@@ -1,6 +1,5 @@
 #pragma once
 
-
 #define SCREEN_SIZE_X 800
 #define SCREEN_SIZE_Y 600
 
@@ -22,14 +21,11 @@ public:
     bool init();
 
     SDL_Texture* loadImage(const char* filename);
+    void deleteTexture(SDL_Texture* texture);
 
     void clear();
-
     void renderImage(SDL_Texture* texture, SDL_Rect* destRect = nullptr, SDL_Rect* srcRect = nullptr);
-
     void render();
-
-    void deleteTexture(SDL_Texture* texture);
 
     void release();
 };

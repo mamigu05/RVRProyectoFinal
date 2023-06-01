@@ -1,5 +1,8 @@
 #include "UnoGame.hpp"
+
 #include "RenderManager.hpp"
+#include "Mazo.hpp"
+#include "Player.hpp"
 
 UnoGame::UnoGame(RenderManager* rM) : Scene() {
     renderMng = rM;
@@ -10,25 +13,26 @@ UnoGame::UnoGame(RenderManager* rM) : Scene() {
     destinationRect.w = 200;
     destinationRect.h = 350;
     texture = renderMng->loadImage("assets/+4.png");
+
+    m = new Mazo();
+    p = new Player(m, renderMng);
+    p->iniGame();
 }
 
 
 UnoGame::~UnoGame() {
-    //Prueba
-    renderMng->deleteTexture(texture);
+    delete m;
+    delete p;
+
 }
 
 void UnoGame::update() {
-    //Prueba
-    destinationRect.x = destinationRect.x + 1 == 400 ?
-                                    0 : destinationRect.x+1;
-
     // Update de las clases
+    p->update();
 }
 
 void UnoGame::render() {
-    //Prueba
-    renderMng->renderImage(texture, &destinationRect);
-
     // Renderizado de clases
+    m->render();
+    p->render();
 }
