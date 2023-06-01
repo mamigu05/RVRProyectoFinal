@@ -1,9 +1,10 @@
 #include "Player.hpp"
 
 #include "Mazo.hpp"
+#include "Mesa.hpp"
 #include "RenderManager.hpp"
 
-Player::Player(Mazo* mazo, RenderManager* rM) : mazo(mazo), rM(rM) {}
+Player::Player(Mazo* mazo, RenderManager* rM, Mesa* mesa) : mazo(mazo), rM(rM), mesa(mesa) {}
 
 Player::~Player() {
     for(Carta* c : mano) {
@@ -20,12 +21,7 @@ void Player::iniGame() {
     }
 }
 
-void Player::update() {
-    for(Carta* c : mano)
-        c->update();
-}
-
-void Player::render(){
+void Player::update(SDL_Event& event) {
     int numCartas = mano.size();
 
     float proporcion = 750 / numCartas;
@@ -47,7 +43,7 @@ void Player::render(){
     for(int i = 0; i < filas; i++) {
         for(int j = 0; j < columnas; j++) {
             if(iC < numCartas){
-                mano[iC]->render(x, y, wC, hC);
+                mano[iC]->update(x, y, wC, hC);
                 iC++;
             }
             x += wC;
@@ -55,4 +51,33 @@ void Player::render(){
         x = 25;
         y += hC;
     }
+    if (event.type == SDL_MOUSEBUTTONUP) {
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        for (Carta* c : mano) {
+            if (c->isClicked(mouseX, mouseY)) {
+                colocarCartaEnMesa(c);
+                //mano.erase(it);
+                break;
+            }
+        }
+        if(mazo->isClicked(mouseX, mouseY) && !clicked)
+        {
+            infoCarta info = mazo->sacarCarta();
+            mano.push_back(new Carta(info.tipo, info.num, rM));
+            clicked = true;
+        }
+    }
+    else
+        clicked = false;  
+}
+
+void Player::render(){
+    for(Carta* c : mano)
+        c->render();
+}
+
+void Player::colocarCartaEnMesa(Carta* carta)
+{
+    mesa->colocarCarta(carta);
 }

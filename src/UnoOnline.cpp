@@ -40,7 +40,7 @@ void UnoOnline::run() {
 
         renderMng->clear();
 
-        sceneMng->currentScene()->update();
+        sceneMng->currentScene()->update(windowEvent);
         sceneMng->currentScene()->render();
 
         renderMng->render();

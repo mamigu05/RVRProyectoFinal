@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL2/SDL.h>
 
 class Scene {
 protected:
@@ -6,6 +7,6 @@ protected:
 
 public:
     virtual ~Scene() {}
-    virtual void update() = 0;
+    virtual void update(SDL_Event& event) = 0;
     virtual void render() = 0;
 };

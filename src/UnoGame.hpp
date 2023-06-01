@@ -6,13 +6,14 @@
 class RenderManager;
 class Mazo;
 class Player;
+class Mesa;
 
 class UnoGame : public Scene {
 private:
     RenderManager* renderMng;
     Mazo* m;
     Player* p;
-
+    Mesa* table;
     //Prueba de renderizado y movimiento sin clases
     SDL_Rect destinationRect;
     SDL_Texture* texture;
@@ -20,6 +21,6 @@ private:
 public:
     UnoGame(RenderManager* rM);
     ~UnoGame();
-    void update();
+    void update(SDL_Event& event);
     void render();
 };

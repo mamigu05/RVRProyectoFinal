@@ -1,10 +1,16 @@
 #include "Mazo.hpp"
-
+#include "RenderManager.hpp"
 #include <vector>
 #include <algorithm>
 #include <random>
 
-Mazo::Mazo() {
+Mazo::Mazo(RenderManager* rM) : rM(rM) {
+    destRect = new SDL_Rect();
+    destRect->x = 10;
+    destRect->y = 5;
+    destRect->w = 150;
+    destRect->h = 250;
+    std::string filename = "assets/Comodin.png";
     std::vector<infoCarta> cartasVec;
     cartasVec.reserve(60);
 
@@ -26,6 +32,8 @@ Mazo::Mazo() {
     for (const auto& carta : cartasVec) {
         cartas.emplace(carta.tipo, carta.num);
     }
+    texture = rM->loadImage(filename.c_str());
+    
 
     // Liberar memoria del vector
     cartasVec.clear();
@@ -33,11 +41,11 @@ Mazo::Mazo() {
 }
 
 Mazo::~Mazo(){
-
-}
+    rM->deleteTexture(texture);
+} 
 
 void Mazo::render(){
-    // Renderizar una imagen de mazo
+    rM->renderImage(texture, destRect);
 }
 
 infoCarta Mazo::sacarCarta(){
@@ -48,4 +56,10 @@ infoCarta Mazo::sacarCarta(){
 
 void Mazo::ponerCarta(int tipo, int num){
     cartas.emplace(tipo, num);
+}
+
+bool Mazo::isClicked(int mouseX, int mouseY)
+{
+    return (mouseX >= destRect->x && mouseX < (destRect->x + destRect->w) &&
+            mouseY >= destRect->y && mouseY < (destRect->y + destRect->h));
 }
