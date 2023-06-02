@@ -31,6 +31,7 @@ UnoGame::~UnoGame() {
 void UnoGame::update(SDL_Event& event) {
     // Update de las clases
     p->update(event);
+    table->update();
 }
 
 void UnoGame::render() {

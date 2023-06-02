@@ -6,6 +6,7 @@ class Mesa
 {
 private:
     std::vector<Carta*> cartasEnMesa;
+    Carta* ultimaCarta;
 public:
     Mesa();
     void update();

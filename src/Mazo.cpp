@@ -10,7 +10,7 @@ Mazo::Mazo(RenderManager* rM) : rM(rM) {
     destRect->y = 5;
     destRect->w = 150;
     destRect->h = 250;
-    std::string filename = "assets/Comodin.png";
+    std::string filename = "assets/Mazo.png";
     std::vector<infoCarta> cartasVec;
     cartasVec.reserve(60);
 

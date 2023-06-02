@@ -12,15 +12,15 @@ void Mesa::colocarCarta(Carta* carta)
 
 void Mesa::update()
 {
-
+    ultimaCarta = obtenerUltimaCarta();
+    if(ultimaCarta != nullptr)
+        ultimaCarta->update(300, 100, 150, 250);
 }
 
 void Mesa::render()
 {
-    Carta* ultimaCarta = obtenerUltimaCarta();
     if (ultimaCarta != nullptr) {
-        // Define las coordenadas y dimensiones de la posición donde deseas renderizar la última carta
-        ultimaCarta->update(300, 100, 150, 250);
+        //ultimaCarta->update(300, 100, 150, 250);
         ultimaCarta->render();
     }
 }
