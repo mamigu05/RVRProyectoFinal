@@ -5,7 +5,7 @@
 # Compiler settings - Can be customized.
 CC = g++
 CXXFLAGS = -std=c++11 -Wall -g
-LDFLAGS = -lSDL2 -lSDL2_image -lGL -lGLEW
+LDFLAGS = -lSDL2 -lSDL2_image -lGL -lGLEW -pthread
 
 # Makefile settings - Can be customized.
 APPNAME = myapp
@@ -15,7 +15,7 @@ OBJDIR = obj
 
 ############## Do not change anything from here downwards! #############
 SRC = $(wildcard $(SRCDIR)/*$(EXT))
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
+OBJ = $(filter-out $(OBJDIR)/mainClient.o $(OBJDIR)/mainServer.o, $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o))
 DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 # UNIX-based OS variables & settings
 RM = rm
@@ -29,10 +29,14 @@ WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 ####################### Targets beginning here #########################
 ########################################################################
 
-all: $(APPNAME)
+all: server cliente
 
 # Builds the app
-$(APPNAME): $(OBJ)
+server: $(OBJDIR)/mainServer.o $(OBJ) 
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+# Builds the app
+cliente: $(OBJDIR)/mainClient.o $(OBJ) 
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Creates the dependecy rules

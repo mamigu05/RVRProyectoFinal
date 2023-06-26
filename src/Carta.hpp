@@ -11,7 +11,7 @@ private:
     int num;
     RenderManager* rM;
 
-    std::string names[6] {"Azul", "Amarillo", "Verde", "Rojo", "+4", "Comodin"};
+    std::string names[4] {"Azul", "Amarillo", "Verde", "Rojo"};
     SDL_Texture* texture;
     SDL_Rect* destRect;
 public:
@@ -20,4 +20,6 @@ public:
     void update(int posX, int posY, int width, int height);
     void render();
     bool isClicked(int mouseX, int mouseY);
+    int getTipo() {return tipo;};
+    int getNum() {return num;};
 };

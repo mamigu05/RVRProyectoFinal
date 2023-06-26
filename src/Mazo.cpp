@@ -18,9 +18,9 @@ Mazo::Mazo(RenderManager* rM) : rM(rM) {
         for(int num = 0; num < 13; num++)
             cartasVec.emplace_back(tipo, num);
 
-    for(int tipo = 4; tipo < 6; tipo++)
+    /*for(int tipo = 4; tipo < 6; tipo++)
         for(int i = 0; i < 4; i++)
-            cartasVec.emplace_back(tipo, -1);
+            cartasVec.emplace_back(tipo, -1);*/
 
     // Obtener un generador de números aleatorios
     std::random_device rd;

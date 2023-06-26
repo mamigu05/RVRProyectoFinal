@@ -3,8 +3,9 @@
 #include "Mazo.hpp"
 #include "Mesa.hpp"
 #include "RenderManager.hpp"
+#include "NetManager.hpp"
 
-Player::Player(Mazo* mazo, RenderManager* rM, Mesa* mesa) : mazo(mazo), rM(rM), mesa(mesa) {}
+Player::Player(Mazo* mazo, RenderManager* rM, NetManager* nM, Mesa* mesa) : mazo(mazo), rM(rM), nM(nM), mesa(mesa) {}
 
 Player::~Player() {
     for(Carta* c : mano) {
@@ -19,6 +20,9 @@ void Player::iniGame() {
         infoCarta info = mazo->sacarCarta();
         mano.push_back(new Carta(info.tipo, info.num, rM));
     }
+    SDL_Event event;
+    SDL_zero(event);
+    update(event);
 }
 
 void Player::update(SDL_Event& event) {
@@ -54,11 +58,20 @@ void Player::update(SDL_Event& event) {
     if (event.type == SDL_MOUSEBUTTONUP) {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
-        for (Carta* c : mano) {
-            if (c->isClicked(mouseX, mouseY)) {
-                colocarCartaEnMesa(c);
-                //mano.erase(it);
-                break;
+        if(mesa->getUltimaCarta() != nullptr)
+        {
+            for (auto it = mano.begin(); it != mano.end(); ++it) {
+                if ((*it)->isClicked(mouseX, mouseY) && !clicked) {
+                    if((*it)->getTipo() == mesa->getUltimaCarta()->getTipo() || (*it)->getNum() == mesa->getUltimaCarta()->getNum())
+                    {
+                        colocarCartaEnMesa(*it);
+                        mazo->ponerCarta((*it)->getTipo(), (*it)->getNum());
+                        mano.erase(it);
+                        clicked = true;
+                        nM->sendCard((*it)->getTipo(), (*it)->getNum(), true);
+                        break;
+                    }
+                }
             }
         }
         if(mazo->isClicked(mouseX, mouseY) && !clicked)

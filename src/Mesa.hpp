@@ -12,5 +12,6 @@ public:
     void update();
     void render();
     void colocarCarta(Carta* carta);
-    Carta* obtenerUltimaCarta();
+    Carta* getUltimaCarta() {return ultimaCarta;};
+    //Carta* obtenerUltimaCarta();
 };

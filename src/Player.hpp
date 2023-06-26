@@ -6,17 +6,19 @@
 class Mazo;
 class Mesa;
 class RenderManager;
+class NetManager;
 
 class Player {
 private:
     Mazo* mazo;
     Mesa* mesa;
     RenderManager* rM;
+    NetManager* nM;
     std::vector<Carta*> mano;
     bool clicked = false;
 
 public:
-    Player(Mazo* mazo, RenderManager* rM, Mesa* mesa);
+    Player(Mazo* mazo, RenderManager* rM, NetManager* nM, Mesa* mesa);
     ~Player();
 
     void iniGame();

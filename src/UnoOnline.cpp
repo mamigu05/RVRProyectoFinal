@@ -2,8 +2,10 @@
 
 #include "SceneManager.hpp"
 #include "RenderManager.hpp"
+#include "NetManager.hpp"
 
 #include <SDL2/SDL.h>
+#include <thread>
 
 #include "UnoGame.hpp"
 
@@ -13,14 +15,15 @@ UnoOnline::~UnoOnline() {
 
 }
 
-bool UnoOnline::init() {
+bool UnoOnline::init(NetManager* nM) {
     sceneMng = new SceneManager();
     renderMng = new RenderManager();
+    netMng = nM;
 
     if(!renderMng->init())
         return false;
 
-    sceneMng->addScene(new UnoGame(renderMng));
+    sceneMng->addScene(new UnoGame(renderMng, netMng));
     return true;
 }
 
